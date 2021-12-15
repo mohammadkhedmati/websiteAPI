@@ -11,15 +11,18 @@ def rank(domain):
     url = "https://www.alexa.com/siteinfo/" + domain
     respone = r.get(url)  # get information from page
     soup = BeautifulSoup(respone.content, 'html.parser')
+    # regional_rank = soup.select('p.small.data')
+    # regional_rank = str(regional_rank[0].contents[2])
     for match in soup.find_all('span'):  # remove all span tag
         match.unwrap()
     # select any p tag with big and data class
     global_rank = soup.select('p.big.data')
     global_rank = str(global_rank[0])
-    res = re.findall(r"([0-9,]{1,12})", global_rank)  # find rank
+    G_rank = re.findall(r"([0-9,]{1,12})", global_rank)  # find rank
+    # R_rank = re.findall(r"([0-9,]{1,12})", regional_rank)  # find rank
 
     # return(res[0])  # return rank
-    print(res[0])
+    print(G_rank[0])
 
 
 # org_rank = rank(domain)
