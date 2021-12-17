@@ -1,9 +1,9 @@
-whois
+django
+djangorestframework
+python-whois
 urllib
-json
+beautifulsoup4
 requests
-pandas
-time
-files
-io
-pandas
+requests-html
+html-to-etree
+extract-social-media
