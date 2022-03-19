@@ -1,7 +1,5 @@
-django
-djangorestframework
 python-whois
-urllib
+# urllib
 beautifulsoup4
 requests
 requests-html

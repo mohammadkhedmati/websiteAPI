@@ -3,7 +3,6 @@ import requests
 import re
 from bs4 import BeautifulSoup
 import urllib
-from requests_html import HTML
 from requests_html import HTMLSession
 import urllib.request
 from html_to_etree import parse_html_bytes
