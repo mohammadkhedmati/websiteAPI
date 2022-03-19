@@ -1,9 +1,8 @@
-whois
-urllib
-json
+python-whois
+# urllib
+beautifulsoup4
 requests
-pandas
-time
-files
-io
-pandas
+requests-html
+html-to-etree
+extract-social-media
+fastapi
