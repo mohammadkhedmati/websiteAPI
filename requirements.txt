@@ -7,3 +7,4 @@ requests
 requests-html
 html-to-etree
 extract-social-media
+fastapi
