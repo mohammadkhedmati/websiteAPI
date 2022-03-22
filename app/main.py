@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app import scarper
 from pydantic import BaseModel
-
+from seoanalyzer import analyze
 
 class allinfo(BaseModel):
     url: str
@@ -36,4 +36,9 @@ async def root():
 @app.post("/allinfo/")
 async def allinfo(item: allinfo):
     resp = scarper.AllInfo(item.url)
-    return True
+    return resp
+
+@app.post("/seo_analyze/")
+async def seoanalyze(item: allinfo):
+    output = analyze(item.url, analyze_headings=True, analyze_extra_tags=True)
+    return output
