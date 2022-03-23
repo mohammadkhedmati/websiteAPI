@@ -8,6 +8,23 @@ import urllib.request
 from html_to_etree import parse_html_bytes
 from extract_social_media import find_links_tree
 
+import json
+
+def google_api(url):
+    # Define URL  
+    url = url
+
+    # API request url
+    result = urllib.request.urlopen('https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={}/&strategy=mobile'\
+    .format(url)).read().decode('UTF-8')
+    print(result)
+
+    # Convert to json format
+    result_json = json.loads(result)
+
+    print(result_json)
+    return result
+
 
 def AllInfo(url):
     info = {}

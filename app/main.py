@@ -1,11 +1,17 @@
 from fastapi import FastAPI
-from app import scarper
+from app import scraper
 from pydantic import BaseModel
 from seoanalyzer import analyze
+
 
 class allinfo(BaseModel):
     url: str
 
+class seoanalyz(BaseModel):
+    url: str
+
+class googleapi(BaseModel):
+    url: str
 
 description = """
 Instagram API helps you to get website SEO details. 🚀
@@ -35,10 +41,15 @@ async def root():
 
 @app.post("/allinfo/")
 async def allinfo(item: allinfo):
-    resp = scarper.AllInfo(item.url)
+    resp = scraper.AllInfo(item.url)
     return resp
 
 @app.post("/seo_analyze/")
-async def seoanalyze(item: allinfo):
+async def seoanalyze(item: seoanalyz):
     output = analyze(item.url, analyze_headings=True, analyze_extra_tags=True)
     return output
+
+@app.post("/google_api/")
+async def google_api(item: googleapi):
+    resp = scraper.google_api(item.url)
+    return resp

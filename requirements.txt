@@ -1,5 +1,5 @@
 python-whois
-# urllib
+urllib
 beautifulsoup4
 requests
 requests-html
@@ -8,3 +8,5 @@ extract-social-media
 fastapi
 seolib
 pyseoanalyzer
+Twisted
+Scrapy
