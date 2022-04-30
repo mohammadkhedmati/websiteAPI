@@ -1,5 +1,4 @@
 fastapi
-uvicorn
 python-whois
 #urllib
 beautifulsoup4
