@@ -12,8 +12,14 @@ def page_information(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "page" })
-    page_info_tbl = page_info_sec.find("table")
+    try:
+        page_info_sec = soup.find("section", { "id" : "page" })
+        page_info_tbl = page_info_sec.find("table")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     
     rows = page_info_tbl.find_all('tr')
     page_information = {}
@@ -34,9 +40,14 @@ def website_information(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "site" })
-    page_info_tbl = page_info_sec.find("table")
-
+    try:
+        page_info_sec = soup.find("section", { "id" : "site" })
+        page_info_tbl = page_info_sec.find("table")
+    except :
+            return {
+                'status' : 400,
+                'error' : 'Not Found'
+            }
     rows = page_info_tbl.find_all('tr')
     web_information = {}
     for col in rows:
@@ -56,9 +67,14 @@ def Technologies(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "techs" })
-    page_info_tbl = page_info_sec.find("table")
-
+    try:
+        page_info_sec = soup.find("section", { "id" : "techs" })
+        page_info_tbl = page_info_sec.find("table")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     rows = page_info_tbl.find_all('tr')
     # count_children = len(page_info_tbl.find_all('tr')) number of children
     Technologies_info = {}
@@ -79,9 +95,14 @@ def Rankings(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "ranks" })
-    page_info_div = page_info_sec.find("div", {"class" : "charts"})
-    
+    try:
+        page_info_sec = soup.find("section", { "id" : "ranks" })
+        page_info_div = page_info_sec.find("div", {"class" : "charts"})
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     ranking_info = {}
     for sibling in page_info_div.div.next_siblings:
         try:
@@ -104,9 +125,14 @@ def Linking_information(url):
     check_url=base_url+domain
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "seo" })
-    page_info_div = page_info_sec.find("div", {"class" : "charts"})
-    
+    try:
+        page_info_sec = soup.find("section", { "id" : "seo" })
+        page_info_div = page_info_sec.find("div", {"class" : "charts"})
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     link_info = {}
     for sibling in page_info_div.div.next_siblings:
         try:
@@ -129,9 +155,14 @@ def social(url):
     check_url=base_url+domain
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "social" })
-    page_info_div = page_info_sec.find("div", {"class" : "charts"})
-    
+    try:
+        page_info_sec = soup.find("section", { "id" : "social" })
+        page_info_div = page_info_sec.find("div", {"class" : "charts"})
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     social_acc = {}
     for sibling in page_info_div.div.next_siblings:
         try:
@@ -155,9 +186,14 @@ def Estimated_traffic(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "traffic" })
-    page_info_tbl = page_info_sec.find("table")
-    
+    try:
+        page_info_sec = soup.find("section", { "id" : "traffic" })
+        page_info_tbl = page_info_sec.find("table")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     rows = page_info_tbl.find_all('tr')
     traffic_information = {}
     for col in rows:
@@ -177,11 +213,16 @@ def On_page_data_headings(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "onpage" })
-    page_info_div = page_info_sec.find("div", {"id" : "headings"})
+    try:
+        page_info_sec = soup.find("section", { "id" : "onpage" })
+        page_info_div = page_info_sec.find("div", {"id" : "headings"})
+        page_info_tbl = page_info_div.find("table")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
 
-    page_info_tbl = page_info_div.find("table")
-    
     rows = page_info_tbl.find_all('tr')
     names = rows[0].find_all('th')
     values = rows[1].find_all('td')
@@ -222,11 +263,15 @@ def On_page_data_links(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "onpage" })
-    page_info_div = page_info_sec.find("div", {"id" : "links"})
-
-    page_info_tbl = page_info_div.find("table")
-    
+    try:
+        page_info_sec = soup.find("section", { "id" : "onpage" })
+        page_info_div = page_info_sec.find("div", {"id" : "links"})
+        page_info_tbl = page_info_div.find("table")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     rows = page_info_tbl.find_all('tr')
     links = {}
     for col in rows:
@@ -250,11 +295,15 @@ def On_page_data_images(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "onpage" })
-    page_info_div = page_info_sec.find("div", {"id" : "images"})
-
-    page_info_tbl = page_info_div.find("table")
-    
+    try:
+        page_info_sec = soup.find("section", { "id" : "onpage" })
+        page_info_div = page_info_sec.find("div", {"id" : "images"})
+        page_info_tbl = page_info_div.find("table")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     rows = page_info_tbl.find_all('tr')
     images = {}
     for col in rows:
@@ -278,9 +327,14 @@ def Top_ranking_keywords(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "semtop" })
-    page_info_tbl = page_info_sec.find("table")
-    
+    try:
+        page_info_sec = soup.find("section", { "id" : "semtop" })
+        page_info_tbl = page_info_sec.find("table")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     rows = page_info_tbl.find_all('tr')
     keywords = {}
     keywords["keyword"] = "Position_in_Google","Volume_per_month","CPC"
@@ -308,9 +362,14 @@ def Competitors(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "semcomp" })
-    page_info_tbl = page_info_sec.find("table")
-    
+    try:
+        page_info_sec = soup.find("section", { "id" : "semcomp" })
+        page_info_tbl = page_info_sec.find("table")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     rows = page_info_tbl.find_all('tr')
     competits = {}
     for el in rows:
@@ -333,9 +392,14 @@ def Domain_whois(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "whois" })
-    page_info_tbl = page_info_sec.find("table")
-
+    try:
+        page_info_sec = soup.find("section", { "id" : "whois" })
+        page_info_tbl = page_info_sec.find("table")
+    except :
+            return {
+                'status' : 400,
+                'error' : 'Not Found'
+            }
     rows = page_info_tbl.find_all('tr')
     domainwhois = {}
     for col in rows:
@@ -355,9 +419,14 @@ def IP_whois(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "ipwhois" })
-    page_info_tbl = page_info_sec.find("table")
-
+    try:
+        page_info_sec = soup.find("section", { "id" : "ipwhois" })
+        page_info_tbl = page_info_sec.find("table")
+    except :
+            return {
+                'status' : 400,
+                'error' : 'Not Found'
+            }
     rows = page_info_tbl.find_all('tr')
     whois = {}
     for col in rows:
@@ -377,8 +446,14 @@ def Websites_on_IP(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "onip" })
-    page_info_div = page_info_sec.find_all("a")
+    try:
+        page_info_sec = soup.find("section", { "id" : "onip" })
+        page_info_div = page_info_sec.find_all("a")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     onip = {}
     onip["subdomains"] = page_info_sec.find("h2").text.strip()
     most = []
@@ -398,8 +473,14 @@ def Subdomains(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_sec = soup.find("section", { "id" : "sub" })
-    page_info_div = page_info_sec.find_all("a")
+    try:
+        page_info_sec = soup.find("section", { "id" : "sub" })
+        page_info_div = page_info_sec.find_all("a")
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     subs = {}
     subs["subdomains"] = page_info_sec.find("h2").text.strip()
     most = []
@@ -418,8 +499,13 @@ def Backlinks_report(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_tbl = soup.find("table", {"class" : "simple"})
-    
+    try:
+        page_info_tbl = soup.find("table", {"class" : "simple"})
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     rows = page_info_tbl.find('tr')
     cols = rows.find_all('td')
     backlinks = {}
@@ -445,8 +531,13 @@ def Website_Rating(url):
     # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
-    page_info_div = soup.find("div", {"class" : "row"})
-    
+    try:
+        page_info_div = soup.find("div", {"class" : "row"})
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
     names = page_info_div.find_all("div", {"class" : "name"})
     values = page_info_div.find_all("div", {"class" : "number"})
     web_rate = {}
