@@ -132,3 +132,8 @@ async def backlins(item: domain):
 async def web_rate(item: domain):
     resp = data.Website_Rating(item.url)
     return resp
+
+@app.post("/web_authority/")
+async def web_authority(item: domain):
+    resp = data.website_authority(item.url)
+    return resp

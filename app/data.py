@@ -547,3 +547,27 @@ def Website_Rating(url):
         web_rate[name] = value
 
     return web_rate
+
+def website_authority(url):
+    base_url="https://www.linkody.com/en/seo-tools/website-authority/"
+    domain = url
+    check_url=base_url+domain
+    # request formatted url for rank
+    page=requests.get(check_url).text
+    soup=BeautifulSoup(page, 'html.parser')
+    try:
+        page_info_div = soup.find("div", {"class" : "row"})
+    except :
+        return {
+            'status' : 400,
+            'error' : 'Not Found'
+        }
+    names = page_info_div.find_all("div", {"class" : "name"})
+    values = page_info_div.find_all("div", {"class" : "number"})
+    web_authority = {}
+    for name,value in zip(names,values):
+        name = name.text.strip()
+        value = value.text.strip()
+        web_authority[name] = value
+
+    return web_authority
