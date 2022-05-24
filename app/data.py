@@ -3,22 +3,55 @@ from bs4 import BeautifulSoup
 import re
 
 
-
-def page_information(url):
+def html_pars(url):
     base_url="https://www.wmtips.com/tools/info/"
     domain = 'www.' + url 
     check_url=base_url+domain
-
-    # request formatted url for rank
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
+    return soup 
+
+def html_pars_likody(url):
+    base_url_linkody="http://bc.linkody.com/en/seo-tools/free-backlink-checker/"
+    domain_linkody = url + '?' + '/'
+    check_url_linkody =base_url_linkody+domain_linkody
+    page_linkody=requests.get(check_url_linkody).text
+    soup_linkody=BeautifulSoup(page_linkody, 'html.parser')
+    return soup_linkody
+
+def all_info(url):
+    items = [
+        page_information,website_information,Technologies,
+        Rankings,Linking_information,social,Estimated_traffic,
+        On_page_data_headings,On_page_data_links,On_page_data_images,
+        Top_ranking_keywords,Competitors,Domain_whois,IP_whois,
+        Websites_on_IP,Subdomains,Backlinks_report,Website_Rating,website_authority
+    ]
+    items_str = [
+        'page_information','website_information','Technologies',
+        'Rankings','Linking_information','social','Estimated_traffic',
+        'On_page_data_headings','On_page_data_links','On_page_data_images',
+        'Top_ranking_keywords','Competitors','Domain_whois','IP_whois',
+        'Websites_on_IP','Subdomains','Backlinks_report','Website_Rating','website_authority'
+    ]
+    allinfo = {}
+    for item,item_str in zip(items,items_str):
+        try:
+            res = item(url)
+            allinfo[item_str] = res
+        except :
+            allinfo[item_str] = None
+            pass
+        
+    return allinfo
+def page_information(url):
+    soup=html_pars(url)
     try:
         page_info_sec = soup.find("section", { "id" : "page" })
         page_info_tbl = page_info_sec.find("table")
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     
     rows = page_info_tbl.find_all('tr')
@@ -33,13 +66,8 @@ def page_information(url):
     return page_information
 
 def website_information(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "site" })
         page_info_tbl = page_info_sec.find("table")
@@ -60,20 +88,14 @@ def website_information(url):
     return web_information
 
 def Technologies(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "techs" })
         page_info_tbl = page_info_sec.find("table")
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     rows = page_info_tbl.find_all('tr')
     # count_children = len(page_info_tbl.find_all('tr')) number of children
@@ -88,20 +110,14 @@ def Technologies(url):
     return Technologies_info
 
 def Rankings(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "ranks" })
         page_info_div = page_info_sec.find("div", {"class" : "charts"})
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     ranking_info = {}
     for sibling in page_info_div.div.next_siblings:
@@ -120,18 +136,14 @@ def Rankings(url):
     return ranking_info
 
 def Linking_information(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
+    soup=html_pars(url)
+
     try:
         page_info_sec = soup.find("section", { "id" : "seo" })
         page_info_div = page_info_sec.find("div", {"class" : "charts"})
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     link_info = {}
     for sibling in page_info_div.div.next_siblings:
@@ -150,18 +162,14 @@ def Linking_information(url):
     return link_info
 
 def social(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
+    soup=html_pars(url)
+
     try:
         page_info_sec = soup.find("section", { "id" : "social" })
         page_info_div = page_info_sec.find("div", {"class" : "charts"})
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     social_acc = {}
     for sibling in page_info_div.div.next_siblings:
@@ -179,20 +187,14 @@ def social(url):
     return social_acc
 
 def Estimated_traffic(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "traffic" })
         page_info_tbl = page_info_sec.find("table")
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     rows = page_info_tbl.find_all('tr')
     traffic_information = {}
@@ -206,21 +208,15 @@ def Estimated_traffic(url):
     return traffic_information
 
 def On_page_data_headings(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "onpage" })
         page_info_div = page_info_sec.find("div", {"id" : "headings"})
         page_info_tbl = page_info_div.find("table")
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
 
     rows = page_info_tbl.find_all('tr')
@@ -256,21 +252,15 @@ def On_page_data_headings(url):
     return heading
 
 def On_page_data_links(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "onpage" })
         page_info_div = page_info_sec.find("div", {"id" : "links"})
         page_info_tbl = page_info_div.find("table")
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     rows = page_info_tbl.find_all('tr')
     links = {}
@@ -288,21 +278,15 @@ def On_page_data_links(url):
     return links
 
 def On_page_data_images(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "onpage" })
         page_info_div = page_info_sec.find("div", {"id" : "images"})
         page_info_tbl = page_info_div.find("table")
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     rows = page_info_tbl.find_all('tr')
     images = {}
@@ -320,22 +304,16 @@ def On_page_data_images(url):
     return images
 
 def Top_ranking_keywords(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "semtop" })
         page_info_tbl = page_info_sec.find("table")
+        rows = page_info_tbl.find_all('tr')
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
-    rows = page_info_tbl.find_all('tr')
     keywords = {}
     keywords["keyword"] = "Position_in_Google","Volume_per_month","CPC"
     for el in rows:
@@ -355,20 +333,14 @@ def Top_ranking_keywords(url):
     return keywords
 
 def Competitors(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "semcomp" })
         page_info_tbl = page_info_sec.find("table")
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     rows = page_info_tbl.find_all('tr')
     competits = {}
@@ -385,13 +357,8 @@ def Competitors(url):
     return competits
 
 def Domain_whois(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "whois" })
         page_info_tbl = page_info_sec.find("table")
@@ -412,13 +379,8 @@ def Domain_whois(url):
     return domainwhois
 
 def IP_whois(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "ipwhois" })
         page_info_tbl = page_info_sec.find("table")
@@ -439,20 +401,14 @@ def IP_whois(url):
     return whois
 
 def Websites_on_IP(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "onip" })
         page_info_div = page_info_sec.find_all("a")
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     onip = {}
     onip["subdomains"] = page_info_sec.find("h2").text.strip()
@@ -466,20 +422,14 @@ def Websites_on_IP(url):
     return onip
 
 def Subdomains(url):
-    base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
-    check_url=base_url+domain
+    soup=html_pars(url)
 
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
     try:
         page_info_sec = soup.find("section", { "id" : "sub" })
         page_info_div = page_info_sec.find_all("a")
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
     subs = {}
     subs["subdomains"] = page_info_sec.find("h2").text.strip()
@@ -493,21 +443,16 @@ def Subdomains(url):
 
 #Linkody
 def Backlinks_report(url):
-    base_url="http://bc.linkody.com/en/seo-tools/free-backlink-checker/"
-    domain = url + '?' + '/'
-    check_url=base_url+domain
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
+    
+    soup_linkody = html_pars_likody(url)
     try:
-        page_info_tbl = soup.find("table", {"class" : "simple"})
+        page_info_tbl = soup_linkody.find("table", {"class" : "simple"})
+        rows = page_info_tbl.find('tr')
+        cols = rows.find_all('td')
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
-    rows = page_info_tbl.find('tr')
-    cols = rows.find_all('td')
     backlinks = {}
     idx = 0
     for col in cols:
@@ -525,21 +470,16 @@ def Backlinks_report(url):
     return backlinks
 
 def Website_Rating(url):
-    base_url="http://bc.linkody.com/en/seo-tools/free-backlink-checker/"
-    domain = url
-    check_url=base_url+domain
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
+    soup_linkody = html_pars_likody(url)
+
     try:
-        page_info_div = soup.find("div", {"class" : "row"})
+        page_info_div = soup_linkody.find("div", {"class" : "row"})
+        names = page_info_div.find_all("div", {"class" : "name"})
+        values = page_info_div.find_all("div", {"class" : "number"})
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
-    names = page_info_div.find_all("div", {"class" : "name"})
-    values = page_info_div.find_all("div", {"class" : "number"})
     web_rate = {}
     for name,value in zip(names,values):
         name = name.text.strip()
@@ -549,21 +489,15 @@ def Website_Rating(url):
     return web_rate
 
 def website_authority(url):
-    base_url="https://www.linkody.com/en/seo-tools/website-authority/"
-    domain = url
-    check_url=base_url+domain
-    # request formatted url for rank
-    page=requests.get(check_url).text
-    soup=BeautifulSoup(page, 'html.parser')
+    soup_linkody = html_pars_likody(url)
     try:
-        page_info_div = soup.find("div", {"class" : "row"})
+        page_info_div = soup_linkody.find("div", {"class" : "row"})
+        names = page_info_div.find_all("div", {"class" : "name"})
+        values = page_info_div.find_all("div", {"class" : "number"})
     except :
         return {
-            'status' : 400,
-            'error' : 'Not Found'
+            None
         }
-    names = page_info_div.find_all("div", {"class" : "name"})
-    values = page_info_div.find_all("div", {"class" : "number"})
     web_authority = {}
     for name,value in zip(names,values):
         name = name.text.strip()
