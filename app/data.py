@@ -11,8 +11,9 @@ def html_pars(url):
     soup=BeautifulSoup(page, 'html.parser')
     return soup 
 
-def html_pars_likody(url):
-    base_url_linkody="http://bc.linkody.com/en/seo-tools/free-backlink-checker/"
+def html_pars_likody(url,chekcer):
+    base_url_linkody="http://bc.linkody.com/en/seo-tools/{}/".format(chekcer)
+    print(base_url_linkody)
     domain_linkody = url + '?' + '/'
     check_url_linkody =base_url_linkody+domain_linkody
     page_linkody=requests.get(check_url_linkody).text
@@ -444,7 +445,7 @@ def Subdomains(url):
 #Linkody
 def Backlinks_report(url):
     
-    soup_linkody = html_pars_likody(url)
+    soup_linkody = html_pars_likody(url,"free-backlink-checker")
     try:
         page_info_tbl = soup_linkody.find("table", {"class" : "simple"})
         rows = page_info_tbl.find('tr')
@@ -470,7 +471,7 @@ def Backlinks_report(url):
     return backlinks
 
 def Website_Rating(url):
-    soup_linkody = html_pars_likody(url)
+    soup_linkody = html_pars_likody(url,"free-backlink-checker")
 
     try:
         page_info_div = soup_linkody.find("div", {"class" : "row"})
@@ -489,7 +490,7 @@ def Website_Rating(url):
     return web_rate
 
 def website_authority(url):
-    soup_linkody = html_pars_likody(url)
+    soup_linkody = html_pars_likody(url,"website-authority")
     try:
         page_info_div = soup_linkody.find("div", {"class" : "row"})
         names = page_info_div.find_all("div", {"class" : "name"})
