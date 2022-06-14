@@ -46,6 +46,11 @@ async def all_info(item: domain):
     resp = data.all_info(item.url)
     return resp
 
+@app.post("/page_discription/")
+async def page_discription(item: domain):
+    resp = data.web_description(item.url)
+    return resp
+
 @app.post("/page_information/")
 async def page_information(item: domain):
     resp = data.page_information(item.url)

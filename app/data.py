@@ -5,8 +5,15 @@ import re
 
 def html_pars(url):
     base_url="https://www.wmtips.com/tools/info/"
-    domain = 'www.' + url 
+    domain = url 
     check_url=base_url+domain
+    page=requests.get(check_url).text
+    soup=BeautifulSoup(page, 'html.parser')
+    return soup 
+
+def html_parser(url):
+    base_url="https://www.wmtips.com/tools/info/"
+    check_url=base_url+url
     page=requests.get(check_url).text
     soup=BeautifulSoup(page, 'html.parser')
     return soup 
@@ -22,14 +29,14 @@ def html_pars_likody(url,chekcer):
 
 def all_info(url):
     items = [
-        page_information,website_information,Technologies,
+        web_description,page_information,website_information,Technologies,
         Rankings,Linking_information,social,Estimated_traffic,
         On_page_data_headings,On_page_data_links,On_page_data_images,
         Top_ranking_keywords,Competitors,Domain_whois,IP_whois,
         Websites_on_IP,Subdomains,Backlinks_report,Website_Rating,website_authority
     ]
     items_str = [
-        'page_information','website_information','Technologies',
+        'web_description','page_information','website_information','Technologies',
         'Rankings','Linking_information','social','Estimated_traffic',
         'On_page_data_headings','On_page_data_links','On_page_data_images',
         'Top_ranking_keywords','Competitors','Domain_whois','IP_whois',
@@ -45,6 +52,26 @@ def all_info(url):
             pass
         
     return allinfo
+
+def web_description(url):
+    soup=html_pars(url)
+    try:
+        page_info_sec = soup.find("div", { "class" : "flex" })
+        page_disc = page_info_sec.find_all("p")
+    except :
+        return {
+            None
+        }
+    para = ''
+    for paragraph in page_disc:
+            print(paragraph)
+            temp = paragraph.text.strip()
+            para = para + temp
+    parag = {
+        'disc': para
+    }
+    return parag
+
 def page_information(url):
     soup=html_pars(url)
     try:
@@ -126,10 +153,8 @@ def Rankings(url):
             s = sibling.findChildren()
             s[0].find("div", {"class" : "tooltip"}).decompose()
             name = s[0].text.strip()
-            # print(name)
             for siblings in sibling.div.next_siblings:
                 value = siblings.text.strip()
-                # print(value)
             ranking_info[name] = value
         except :
             pass    
@@ -152,10 +177,8 @@ def Linking_information(url):
             s = sibling.findChildren()
             s[0].find("div", {"class" : "tooltip"}).decompose()
             name = s[0].text.strip()
-            # print(name)
             for siblings in sibling.div.next_siblings:
                 value = siblings.text.strip()
-                # print(value)
             link_info[name] = value
         except :
             pass   
