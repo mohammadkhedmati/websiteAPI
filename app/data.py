@@ -18,9 +18,8 @@ def html_parser(url):
     soup=BeautifulSoup(page, 'html.parser')
     return soup 
 
-def html_pars_likody(url,chekcer):
+def html_pars_likody(url):
     base_url_linkody="http://bc.linkody.com/en/seo-tools/{}/".format(chekcer)
-    print(base_url_linkody)
     domain_linkody = url + '?' + '/'
     check_url_linkody =base_url_linkody+domain_linkody
     page_linkody=requests.get(check_url_linkody).text
@@ -48,7 +47,12 @@ def all_info(url):
             res = item(url)
             allinfo[item_str] = res
         except :
-            allinfo[item_str] = None
+            try:
+                url = 'www.'
+                res = item(url)
+                allinfo[item_str] = res
+            except:
+                allinfo[item_str] = None
             pass
         
     return allinfo
@@ -64,7 +68,6 @@ def web_description(url):
         }
     para = ''
     for paragraph in page_disc:
-            print(paragraph)
             temp = paragraph.text.strip()
             para = para + temp
     parag = {
