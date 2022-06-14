@@ -133,8 +133,8 @@ async def subdomains(item: domain):
     return resp
 
 #linkody
-@app.post("/backlins/")
-async def backlins(item: domain):
+@app.post("/backlinks/")
+async def backlinks(item: domain):
     resp = data.Backlinks_report(item.url)
     return resp
 
