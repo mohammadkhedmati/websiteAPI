@@ -63,9 +63,20 @@ def web_description(url):
     for paragraph in page_disc:
             temp = paragraph.text.strip()
             para = para + temp
+    words = para.split(' ')
+    ranks_arr = []
+    for word in words:
+        if "#" in word:
+            ranks_arr.append(word)
     parag = {
-        'disc': para
+        'disc': para,
     }
+    try:
+        parag['world'] = ranks_arr[0]
+        parag['iran'] = ranks_arr[1]
+    except :
+        parag['world'] = None
+        parag['iran'] = None
     return parag
 
 def page_information(url):
