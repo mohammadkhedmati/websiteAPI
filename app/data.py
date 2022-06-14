@@ -11,7 +11,7 @@ def html_pars(url):
     soup=BeautifulSoup(page, 'html.parser')
     return soup 
 
-def html_pars_likody(ur,chekcer):
+def html_pars_likody(url,chekcer):
     base_url_linkody="http://bc.linkody.com/en/seo-tools/{}/".format(chekcer)
     domain_linkody = url + '?' + '/'
     check_url_linkody =base_url_linkody+domain_linkody
