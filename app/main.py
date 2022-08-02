@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from app import scraper
 from app import data
 from pydantic import BaseModel
 
