@@ -8,11 +8,9 @@ def html_pars(url):
     base_url="https://www.wmtips.com/tools/info/"
     domain = url 
     check_url=base_url+domain
-    print(check_url)
     req = Request(check_url, headers={'User-Agent': 'Mozilla/5.0'})
     page = urlopen(req).read()
     # page=requests.get(check_url).text
-    print(page)
     soup=BeautifulSoup(page, 'html.parser')
     return soup 
 
@@ -153,12 +151,10 @@ def Rankings(url):
     soup=html_pars(url)
 
     try:
-        print(soup)
         page_info_sec = soup.find("section", { "id" : "ranks" })
         page_info_div = page_info_sec.find("div", {"class" : "charts"})
         print(page_info_div)
     except :
-        print('injas')
         return {
             None
         }
