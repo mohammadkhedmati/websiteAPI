@@ -8,3 +8,4 @@ requests-html
 html-to-etree
 extract-social-media
 requests-html
+fake-useragent

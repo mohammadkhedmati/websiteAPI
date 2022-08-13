@@ -2,15 +2,22 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from urllib.request import Request, urlopen
-
+from fake_useragent import UserAgent
 
 def html_pars(url):
     base_url="https://www.wmtips.com/tools/info/"
     domain = url 
     check_url=base_url+domain
-    req = Request(check_url, headers={'User-Agent': 'Mozilla/5.0'})
-    page = urlopen(req).read()
-    # page=requests.get(check_url).text
+    ua = UserAgent()
+    print(ua.chrome)
+    proxies = {
+    "http": 'http://47.74.38.43:8118', 
+    "https": 'http://119.82.253.24:44060'
+    }
+    # req = Request(check_url, headers={'User-Agent': 'Mozilla/5.0'})
+    # page = urlopen(req).read()
+    headers = {'User-Agent': ua.chrome}
+    page=requests.get(check_url, headers= headers, proxies= proxies).text
     soup=BeautifulSoup(page, 'html.parser')
     return soup 
 
@@ -149,11 +156,11 @@ def Technologies(url):
 
 def Rankings(url):
     soup=html_pars(url)
-
+    # print(soup)
     try:
         page_info_sec = soup.find("section", { "id" : "ranks" })
         page_info_div = page_info_sec.find("div", {"class" : "charts"})
-        print(page_info_div)
+        # print(page_info_div)
     except :
         return {
             None
