@@ -2,38 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from urllib.request import Request, urlopen
-from fake_useragent import UserAgent
+from fp.fp import FreeProxy
 
 
 def html_pars(url):
     base_url = "https://www.wmtips.com/tools/info/"
     domain = url
     check_url = base_url+domain
-    # ua = UserAgent()
-    # print(ua.chrome)
-    proxies = {
-        "http": 'http://47.74.38.43:8118',
-        "https": 'http://119.82.253.24:44060'
-    }
-    # curl 'https://www.wmtips.com/tools/info/www.hozehonari.ir' \
-    # -H 'authority: www.wmtips.com' \
-    # -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
-    # -H 'accept-language: en-US,en;q=0.9,fa;q=0.8' \
-    # -H 'cache-control: max-age=0' \
-    # -H 'cookie: sc_is_visitor_unique=rx3367981.1660377217.B992B83B557C4FFFB14906F463B336AC.2.2.2.2.2.2.2.2.2; _gid=GA1.2.2036453768.1660377218; _ga_W8JE4TXSZJ=GS1.1.1660377218.2.0.1660377218.0; _ga=GA1.1.1757969394.1658670102; __atuvc=8%7C30%2C0%7C31%2C1%7C32; __atuvs=62f75882cec68411000' \
-    # -H 'sec-ch-ua: "Chromium";v="104", " Not A;Brand";v="99", "Google Chrome";v="104"' \
-    # -H 'sec-ch-ua-mobile: ?0' \
-    # -H 'sec-ch-ua-platform: "macOS"' \
-    # -H 'sec-fetch-dest: document' \
-    # -H 'sec-fetch-mode: navigate' \
-    # -H 'sec-fetch-site: none' \
-    # -H 'sec-fetch-user: ?1' \
-    # -H 'upgrade-insecure-requests: 1' \
-    # -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36' \
-    # --compressed
-
-    import requests
-
     cookies = {
         'sc_is_visitor_unique': 'rx3367981.1660377217.B992B83B557C4FFFB14906F463B336AC.2.2.2.2.2.2.2.2.2',
         '_gid': 'GA1.2.2036453768.1660377218',
@@ -60,15 +35,20 @@ def html_pars(url):
         'upgrade-insecure-requests': '1',
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36',
     }
-
+    print("proxxy .... ")
+    proxy = FreeProxy(anonym=True).get()
+    print(proxy)
+    proxies = {
+        'http': proxy,
+        'https': proxy,
+    }
+    ip2 = requests.get('https://httpbin.org/ip', proxies=proxies).text
+    print(ip2)
     response = requests.get(
-        'https://www.wmtips.com/tools/info/'+domain, cookies=cookies, headers=headers)
+        check_url, headers=headers, proxies=proxies)
     print(response)
-    # req = Request(check_url, headers={'User-Agent': 'Mozilla/5.0'})
-    # page = urlopen(req).read()
-    # headers = {'User-Agent': ua.chrome}
-    page = requests.get(check_url).text
-    # print(page)
+    print(response.headers['content-type'])
+
     soup = BeautifulSoup(response.text, 'html.parser')
     return soup
 
@@ -115,7 +95,7 @@ def all_info(url):
     return allinfo
 
 
-def web_description(url, soup_data, useable):
+def web_description(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -148,7 +128,7 @@ def web_description(url, soup_data, useable):
     return parag
 
 
-def page_information(url, soup_data, useable):
+def page_information(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -173,7 +153,7 @@ def page_information(url, soup_data, useable):
     return page_information
 
 
-def website_information(url, soup_data, useable):
+def website_information(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -199,7 +179,7 @@ def website_information(url, soup_data, useable):
     return web_information
 
 
-def Technologies(url, soup_data, useable):
+def Technologies(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -225,7 +205,7 @@ def Technologies(url, soup_data, useable):
     return Technologies_info
 
 
-def Rankings(url, soup_data, useable):
+def Rankings(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -254,7 +234,7 @@ def Rankings(url, soup_data, useable):
     return ranking_info
 
 
-def Linking_information(url, soup_data, useable):
+def Linking_information(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -282,7 +262,7 @@ def Linking_information(url, soup_data, useable):
     return link_info
 
 
-def social(url, soup_data, useable):
+def social(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -311,7 +291,7 @@ def social(url, soup_data, useable):
     return social_acc
 
 
-def Estimated_traffic(url, soup_data, useable):
+def Estimated_traffic(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -336,7 +316,7 @@ def Estimated_traffic(url, soup_data, useable):
     return traffic_information
 
 
-def On_page_data_headings(url, soup_data, useable):
+def On_page_data_headings(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -384,7 +364,7 @@ def On_page_data_headings(url, soup_data, useable):
     return heading
 
 
-def On_page_data_links(url, soup_data, useable):
+def On_page_data_links(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -414,7 +394,7 @@ def On_page_data_links(url, soup_data, useable):
     return links
 
 
-def On_page_data_images(url, soup_data, useable):
+def On_page_data_images(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -444,7 +424,7 @@ def On_page_data_images(url, soup_data, useable):
     return images
 
 
-def Top_ranking_keywords(url, soup_data, useable):
+def Top_ranking_keywords(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -477,7 +457,7 @@ def Top_ranking_keywords(url, soup_data, useable):
     return keywords
 
 
-def Competitors(url, soup_data, useable):
+def Competitors(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -505,7 +485,7 @@ def Competitors(url, soup_data, useable):
     return competits
 
 
-def Domain_whois(url, soup_data, useable):
+def Domain_whois(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -531,7 +511,7 @@ def Domain_whois(url, soup_data, useable):
     return domainwhois
 
 
-def IP_whois(url, soup_data, useable):
+def IP_whois(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -557,7 +537,7 @@ def IP_whois(url, soup_data, useable):
     return whois
 
 
-def Websites_on_IP(url, soup_data, useable):
+def Websites_on_IP(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
@@ -582,7 +562,7 @@ def Websites_on_IP(url, soup_data, useable):
     return onip
 
 
-def Subdomains(url, soup_data, useable):
+def Subdomains(url, soup_data=None, useable=False):
     if useable == True:
         soup = soup_data
     else:
